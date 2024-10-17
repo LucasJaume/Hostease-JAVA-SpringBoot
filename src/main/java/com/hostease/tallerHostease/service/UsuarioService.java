@@ -53,4 +53,9 @@ public class UsuarioService implements IUsuarioService{
             return null;
         }
     }
+
+    @Override
+    public Optional<Usuario> findByUsername(String username) {
+        return UsuarioRepository.findByUsername(username);
+    }
 }

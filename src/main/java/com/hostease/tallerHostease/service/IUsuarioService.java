@@ -15,4 +15,6 @@ public interface IUsuarioService {
     public Usuario createUsuario(Usuario usuario);
 
     public Usuario editUsuario(Usuario usuario, Long id);
+
+    public Optional<Usuario> findByUsername(String email);
 }
