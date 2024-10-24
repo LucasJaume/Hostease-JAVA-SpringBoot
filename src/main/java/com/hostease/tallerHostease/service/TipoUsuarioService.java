@@ -14,7 +14,7 @@ public class TipoUsuarioService implements ITipoUsuarioService {
     private TipoUsuarioRepository tipoUsuarioRepository;
 
     @Override
-    public Optional<TipoUsuario> findById(Long id) {
+    public Optional<TipoUsuario> findById(Integer id) {
         return tipoUsuarioRepository.findById(id);
     }
 
@@ -24,7 +24,7 @@ public class TipoUsuarioService implements ITipoUsuarioService {
     }
 
     @Override
-    public void deleteById(Long id) {  tipoUsuarioRepository.deleteById(id);  }
+    public void deleteById(Integer id) {  tipoUsuarioRepository.deleteById(id);  }
 
     @Override
     public TipoUsuario crearTipoUsuario(TipoUsuario tipoUsuario) {
@@ -32,7 +32,7 @@ public class TipoUsuarioService implements ITipoUsuarioService {
     }
 
 
-    public TipoUsuario editarTipoUsuario(TipoUsuario tipoUsuario, Long id) {
+    public TipoUsuario editarTipoUsuario(TipoUsuario tipoUsuario, Integer id) {
         Optional<TipoUsuario> existingTipoUsuario = tipoUsuarioRepository.findById(id);
         if (existingTipoUsuario.isPresent()) {
             TipoUsuario updatedTipoUsuario = existingTipoUsuario.get();

@@ -22,7 +22,9 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name="usuario")
 public class Usuario implements UserDetails {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  long id;
     private String username;
     private String password;
@@ -32,7 +34,7 @@ public class Usuario implements UserDetails {
     private LocalDate fecha_nacimiento;
     private Instant fecha_creacion;
     private Instant fecha_modificacion;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "usuario_tipo_usuario",
             joinColumns = @JoinColumn(name = "ID_USUARIO"),

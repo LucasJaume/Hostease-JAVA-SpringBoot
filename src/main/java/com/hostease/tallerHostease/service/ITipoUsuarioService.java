@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ITipoUsuarioService {
-    public Optional<TipoUsuario> findById(Long id);
+    public Optional<TipoUsuario> findById(Integer id);
 
     public List<TipoUsuario> findAll();
 
-    public void deleteById(Long id);
+    public void deleteById(Integer id);
 
     public TipoUsuario crearTipoUsuario(TipoUsuario tipoUsuario);
 
-    public TipoUsuario editarTipoUsuario(TipoUsuario tipoUsuario, Long id);
+    public TipoUsuario editarTipoUsuario(TipoUsuario tipoUsuario, Integer id);
 }

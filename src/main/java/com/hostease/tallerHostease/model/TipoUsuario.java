@@ -18,7 +18,7 @@ import lombok.Setter;
 @Table(name = "Tipo_Usuario")
 public class TipoUsuario {
     @Id
-    private Long id;
+    private Integer id;
     @Column(nullable = false)
     private String nombre;
 }

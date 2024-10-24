@@ -1,9 +1,13 @@
 package com.hostease.tallerHostease.controller;
 
 
+import com.hostease.tallerHostease.dto.SaveUserDTO;
 import com.hostease.tallerHostease.model.Usuario;
 import com.hostease.tallerHostease.service.IUsuarioService;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,13 +49,19 @@ public class usuarioController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Usuario> editUsuario(@PathVariable Long id, @RequestBody Usuario usuario){
+    public ResponseEntity<?> editUsuario(
+            @PathVariable Long id,
+            @RequestBody @Valid SaveUserDTO updatedUserDTO) {
 
-        Usuario updatedUsuario = usuarioService.editUsuario(usuario, id);
-        if (updatedUsuario != null) {
-            return ResponseEntity.ok(updatedUsuario);
-        } else {
-            return ResponseEntity.notFound().build();
+        try {
+            Usuario updatedUsuario = usuarioService.editUsuario(updatedUserDTO, id);
+            return ResponseEntity.ok("Usuario actualizado con éxito: " + updatedUsuario.getUsername());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error al actualizar el usuario: " + e.getMessage());
         }
     }
+
 }

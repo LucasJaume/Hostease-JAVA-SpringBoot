@@ -1,5 +1,6 @@
 package com.hostease.tallerHostease.service;
 
+import com.hostease.tallerHostease.dto.SaveUserDTO;
 import com.hostease.tallerHostease.model.Usuario;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public interface IUsuarioService {
 
     public Usuario createUsuario(Usuario usuario);
 
-    public Usuario editUsuario(Usuario usuario, Long id);
+    public Usuario editUsuario(SaveUserDTO usuario, Long id);
 
     public Optional<Usuario> findByUsername(String email);
 }

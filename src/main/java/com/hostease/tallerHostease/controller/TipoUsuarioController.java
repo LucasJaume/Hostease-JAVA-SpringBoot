@@ -24,7 +24,7 @@ public class TipoUsuarioController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TipoUsuario> findById(@PathVariable Long id) {
+    public ResponseEntity<TipoUsuario> findById(@PathVariable Integer id) {
         Optional<TipoUsuario> tipoUsuario = tipoUsuarioService.findById(id);
         return tipoUsuario.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -36,12 +36,12 @@ public class TipoUsuarioController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void eliminarTipoUsuario(@PathVariable Long id) {
+    public void eliminarTipoUsuario(@PathVariable Integer id) {
         tipoUsuarioService.deleteById(id);
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<TipoUsuario> editTipoUsuario(@PathVariable Long id, @RequestBody TipoUsuario tipoUsuario) {
+    public ResponseEntity<TipoUsuario> editTipoUsuario(@PathVariable Integer id, @RequestBody TipoUsuario tipoUsuario) {
         TipoUsuario updateTipoUsuario= tipoUsuarioService.editarTipoUsuario(tipoUsuario, id);
         if (updateTipoUsuario != null) {
             return ResponseEntity.ok(updateTipoUsuario);

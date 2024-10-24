@@ -43,7 +43,7 @@ public class servicioController {
         Servicio updatedServicio = servicioService.editServicio(servicio, id);
         if (updatedServicio != null) {
             return ResponseEntity.ok(updatedServicio);
-        }else{
+        } else {
             return ResponseEntity.notFound().build();
         }
     }

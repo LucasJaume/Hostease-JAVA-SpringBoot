@@ -1,7 +1,9 @@
 package com.hostease.tallerHostease.service;
 
+import com.hostease.tallerHostease.dto.SaveUserDTO;
 import com.hostease.tallerHostease.model.Usuario;
 import com.hostease.tallerHostease.repository.UsuarioRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,25 +38,33 @@ public class UsuarioService implements IUsuarioService{
     }
 
     @Override
-    public Usuario editUsuario(Usuario usuario, Long id) {
+    public Usuario editUsuario(SaveUserDTO updatedUser, Long id) {
         Optional<Usuario> existingUsuario = UsuarioRepository.findById(id);
         if (existingUsuario.isPresent()) {
             Usuario updatedUsuario = existingUsuario.get();
-            updatedUsuario.setUsername(usuario.getUsername());
-            updatedUsuario.setPassword(usuario.getPassword());
-            updatedUsuario.setEmail(usuario.getEmail());
-            updatedUsuario.setNombre(usuario.getNombre());
-            updatedUsuario.setApellido(usuario.getApellido());
-            updatedUsuario.setFecha_nacimiento(usuario.getFecha_nacimiento());
+
+            // Validar si el nuevo correo ya está en uso
+            if (!updatedUser.getEmail().equals(updatedUsuario.getEmail()) &&
+                    UsuarioRepository.existsByEmail(updatedUser.getEmail())) {
+                throw new IllegalArgumentException("El correo electrónico ya está en uso por otro usuario.");
+            }
+
+            updatedUsuario.setUsername(updatedUser.getUsername());
+            updatedUsuario.setPassword(updatedUser.getPassword()); // Asegúrate de cifrar la contraseña si es necesario
+            updatedUsuario.setEmail(updatedUser.getEmail());
+            updatedUsuario.setNombre(updatedUser.getNombre());
+            updatedUsuario.setApellido(updatedUser.getApellido());
             updatedUsuario.setFecha_modificacion(Instant.now());
-            updatedUsuario.setTipoUsuarios(usuario.getTipoUsuarios());
+
             return UsuarioRepository.save(updatedUsuario);
-        }else {
+        } else {
             return null;
         }
     }
 
+
     @Override
+    @Transactional
     public Optional<Usuario> findByUsername(String username) {
         return UsuarioRepository.findByUsername(username);
     }

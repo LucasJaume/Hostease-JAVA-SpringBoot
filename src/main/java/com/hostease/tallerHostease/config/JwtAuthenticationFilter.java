@@ -30,25 +30,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         System.out.println("ENTRO EN EL FILTRO JWT AUTHENTICATION FILTER");
 
-        // 1. Obtener encabezado HTTP llamado Authorization
         String authorizationHeader = request.getHeader("Authorization"); // Bearer jwt
         if (!StringUtils.hasText(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // 2. Obtener token JWT desde el encabezado
+        //  Obtener token JWT desde el encabezado
         String jwt = authorizationHeader.split(" ")[1];
 
-        // 3. Obtener el subject/username desde el token
-        // Esta acción a su vez valida el formato del token, firma y fecha de expiración
         String username = jwtService.extractUsername(jwt);
         if (username == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
             return;
         }
 
-        // 4. Establecer autenticación dentro de SecurityContextHolder
         Usuario user = usuarioService.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("User Not found. Username: " + username));
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
@@ -58,7 +54,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         System.out.println("Se acabó de setear el authentication");
 
-        // 5. Ejecutar el registro de filtro
+        //  Ejecutar el registro de filtro
         filterChain.doFilter(request, response);
     }
 }

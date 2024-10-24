@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class AuthenticationService {
@@ -35,10 +34,10 @@ public class AuthenticationService {
         authenticationManager.authenticate(authenticationToken);
 
         // 3. Cargar los detalles del usuario
-        UserDetails user = userDetailsServiceImp.loadUserByUsername(authRequest.getUsername());
+        Usuario usuario = (Usuario) userDetailsServiceImp.loadUserByUsername(authRequest.getUsername());
 
         // 4. Generar el token JWT
-        String jwt = jwtService.generateToken(user, generateExtraClaims((Usuario) user));
+        String jwt = jwtService.generateToken(usuario, generateExtraClaims(usuario));
 
         // 5. Crear y devolver la respuesta
         AuthenticationResponseDTO authResponse = new AuthenticationResponseDTO();
@@ -46,9 +45,9 @@ public class AuthenticationService {
         return authResponse;
     }
 
+
     //para generar reclamos adicionales
     private Map<String, Object> generateExtraClaims(Usuario user) {
-        // Aquí puedes agregar más información a los reclamos del JWT si es necesario
         return new HashMap<>();
     }
 }
