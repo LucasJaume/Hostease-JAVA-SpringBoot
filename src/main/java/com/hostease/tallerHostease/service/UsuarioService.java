@@ -1,10 +1,12 @@
 package com.hostease.tallerHostease.service;
 
+import com.hostease.tallerHostease.dto.EditUserDTO;
 import com.hostease.tallerHostease.dto.SaveUserDTO;
 import com.hostease.tallerHostease.model.Usuario;
 import com.hostease.tallerHostease.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -17,7 +19,8 @@ public class UsuarioService implements IUsuarioService{
     @Autowired
     private UsuarioRepository UsuarioRepository;
 
-    //Autowired
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Optional<Usuario> findById(Long id) {
@@ -38,7 +41,7 @@ public class UsuarioService implements IUsuarioService{
     }
 
     @Override
-    public Usuario editUsuario(SaveUserDTO updatedUser, Long id) {
+    public Usuario editUsuario(EditUserDTO updatedUser, Long id) {
         Optional<Usuario> existingUsuario = UsuarioRepository.findById(id);
         if (existingUsuario.isPresent()) {
             Usuario updatedUsuario = existingUsuario.get();
@@ -50,7 +53,7 @@ public class UsuarioService implements IUsuarioService{
             }
 
             updatedUsuario.setUsername(updatedUser.getUsername());
-            updatedUsuario.setPassword(updatedUser.getPassword()); // Asegúrate de cifrar la contraseña si es necesario
+            updatedUsuario.setPassword(passwordEncoder.encode(updatedUser.getPassword())); // Asegúrate de cifrar la contraseña si es necesario
             updatedUsuario.setEmail(updatedUser.getEmail());
             updatedUsuario.setNombre(updatedUser.getNombre());
             updatedUsuario.setApellido(updatedUser.getApellido());

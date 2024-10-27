@@ -3,17 +3,20 @@ package com.hostease.tallerHostease.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class EditUserDTO {
     @NotNull(message = "Username no puede estar vacio")
     private String username;
-    @NotNull(message = "Contraseña no puede estar vacio")
+    @NotNull(message = "Contraseña no puede estar vacia")
     private String password;
     @NotNull(message = "Correo no puede estar vacio")
     @Email(message = "El correo debe ser valido")
@@ -22,8 +25,4 @@ public class EditUserDTO {
     private String nombre;
     @NotNull(message = "Apellido no puede estar vacio")
     private String apellido;
-    @NotNull(message = "La fecha de nacimiento no puede ser nula")
-    @JsonProperty(value = "fecha_nacimiento")
-    private LocalDate fecha_nacimiento;
-
 }

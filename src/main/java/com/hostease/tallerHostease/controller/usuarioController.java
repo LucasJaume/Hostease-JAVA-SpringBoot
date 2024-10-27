@@ -1,6 +1,7 @@
 package com.hostease.tallerHostease.controller;
 
 
+import com.hostease.tallerHostease.dto.EditUserDTO;
 import com.hostease.tallerHostease.dto.SaveUserDTO;
 import com.hostease.tallerHostease.model.Usuario;
 import com.hostease.tallerHostease.service.IUsuarioService;
@@ -51,10 +52,10 @@ public class usuarioController {
     @PutMapping("/edit/{id}")
     public ResponseEntity<?> editUsuario(
             @PathVariable Long id,
-            @RequestBody @Valid SaveUserDTO updatedUserDTO) {
+            @RequestBody @Valid EditUserDTO editUserDTO) {
 
         try {
-            Usuario updatedUsuario = usuarioService.editUsuario(updatedUserDTO, id);
+            Usuario updatedUsuario = usuarioService.editUsuario(editUserDTO, id);
             return ResponseEntity.ok("Usuario actualizado con éxito: " + updatedUsuario.getUsername());
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
