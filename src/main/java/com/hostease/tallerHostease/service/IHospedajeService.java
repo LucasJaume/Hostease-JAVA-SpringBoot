@@ -1,5 +1,7 @@
 package com.hostease.tallerHostease.service;
 
+import com.hostease.tallerHostease.dto.CrearHospedajeDTO;
+import com.hostease.tallerHostease.dto.EditHospedajeDTO;
 import com.hostease.tallerHostease.model.Hospedaje;
 
 import java.util.List;
@@ -13,8 +15,8 @@ public interface IHospedajeService {
 
     public void deleteById(Long id);
 
-    public Hospedaje createHospedaje(Hospedaje hospedaje);
+    public Hospedaje createHospedaje(CrearHospedajeDTO crearHospedajeDTO);
 
-    public Hospedaje editHospedaje(Hospedaje hospedaje, Long id);
+    public Hospedaje editHospedaje(EditHospedajeDTO editHospedajeDTO, Long id);
 
 }

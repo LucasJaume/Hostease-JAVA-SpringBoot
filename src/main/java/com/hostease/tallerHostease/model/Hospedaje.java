@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -18,6 +19,7 @@ import java.util.Set;
 @Table(name="Hospedaje")
 public class Hospedaje {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID;
     private String descripcion;
     private String imagen;
@@ -32,11 +34,11 @@ public class Hospedaje {
     @JoinColumn(name = "id_ciudad")
     private Ciudad ciudad;
 
-    @ManyToMany
+    @ManyToMany( fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "servicio_hospedaje",
             joinColumns = @JoinColumn(name = "id_hospedaje"),
             inverseJoinColumns = @JoinColumn(name = "id_servicio")
     )
-    private Set<Servicio> servicios;
+    private Set<Servicio> servicios = new HashSet<>();
 }

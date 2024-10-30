@@ -1,8 +1,9 @@
 package com.hostease.tallerHostease.controller;
 
 
+import com.hostease.tallerHostease.dto.CrearHospedajeDTO;
+import com.hostease.tallerHostease.dto.EditHospedajeDTO;
 import com.hostease.tallerHostease.model.Hospedaje;
-import com.hostease.tallerHostease.service.HospedajeService;
 import com.hostease.tallerHostease.service.IHospedajeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,19 +31,21 @@ public class hospedajeController {
                 .orElseGet(() -> ResponseEntity.notFound().build()); //Retorno error.
     }
     @PostMapping("/Crear")
-    public ResponseEntity<Hospedaje> crearHospedaje(@RequestBody Hospedaje hospedaje){
-
-        return ResponseEntity.ok(hospedajeService.createHospedaje(hospedaje));
+    public ResponseEntity<Hospedaje> crearHospedaje(@RequestBody CrearHospedajeDTO crearHospedajeDTO) {
+        Hospedaje nuevoHospedaje = hospedajeService.createHospedaje(crearHospedajeDTO);
+        return ResponseEntity.ok(nuevoHospedaje);
     }
 
     @DeleteMapping("/Delete/{id}")
-    public  void eliminarHospedaje(@PathVariable Long id){
+    public ResponseEntity<String> eliminarHospedaje(@PathVariable Long id){
         hospedajeService.deleteById(id);
+        return ResponseEntity.ok("Hospedaje eliminado exitosamente.");
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Hospedaje> editHospedaje(@PathVariable Long id, @RequestBody Hospedaje hospedaje){
-        return ResponseEntity.ok(hospedajeService.editHospedaje(hospedaje,id));
+    public ResponseEntity<Hospedaje> editHospedaje(@PathVariable Long id, @RequestBody EditHospedajeDTO editHospedajeDTO){
+        Hospedaje hospedajeActualizado = hospedajeService.editHospedaje(editHospedajeDTO, id);
+        return ResponseEntity.ok(hospedajeActualizado);
     }
 
 

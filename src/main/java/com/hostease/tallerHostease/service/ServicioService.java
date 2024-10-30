@@ -1,11 +1,13 @@
 package com.hostease.tallerHostease.service;
 
+import com.hostease.tallerHostease.dto.EditServicioDTO;
 import com.hostease.tallerHostease.model.Servicio;
 import com.hostease.tallerHostease.repository.ServicioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -20,21 +22,20 @@ public class ServicioService implements IServicioService {
     public List<Servicio> findAll(){ return servicioRepository.findAll();}
 
     @Override
-    public void deleteById(Long id){ servicioRepository.deleteById(id);}
+    public void deleteById(Long id) {
+        servicioRepository.deleteById(id);
+    }
 
-    //CREAR ESTO CON BASE DE DATOS
     @Override
     public Servicio createServicio(Servicio servicio) { return  servicioRepository.save(servicio);}
 
     @Override
-    public Servicio editServicio(Servicio servicio, Long id){
-        Optional<Servicio> servicioOptional = servicioRepository.findById(id);
-        if(servicioOptional.isPresent()){
-            Servicio updateServicio = servicioOptional.get();
-            updateServicio.setNombre(servicio.getNombre());
-            return  servicioRepository.save(updateServicio);
-        }else{
-            return null;
-        }
+    public Servicio editServicio(EditServicioDTO editServicioDTO, Long id) {
+        Servicio updateServicio = servicioRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("El servicio con ID " + id + " no fue encontrado."));
+
+        updateServicio.setNombre(editServicioDTO.getNombre());
+        return servicioRepository.save(updateServicio);
     }
+
 }

@@ -54,7 +54,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         System.out.println("Se acabó de setear el authentication");
 
-        //  Ejecutar el registro de filtro
         filterChain.doFilter(request, response);
     }
 }

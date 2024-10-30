@@ -78,8 +78,22 @@ public class SecurityBeansInjector {
         authReqConfig.requestMatchers(HttpMethod.PUT, "api/Usuario/edit/**").authenticated();
         //Crear Servicio
         authReqConfig.requestMatchers(HttpMethod.POST, "api/Servicio/crear").hasRole("ADMINISTRADOR");
-
-
+        //editar Servicio
+        authReqConfig.requestMatchers(HttpMethod.PUT, "api/Servicio/editar/**").hasRole("ADMINISTRADOR");
+        //Eliminar Servicio
+        authReqConfig.requestMatchers(HttpMethod.DELETE, "api/Servicio/delete/**").hasRole("ADMINISTRADOR");
+        //Crear Hospedaje
+        authReqConfig.requestMatchers(HttpMethod.POST, "api/Hospedaje/Crear").hasRole("ANFITRION");
+        //Editar Hospedaje
+        authReqConfig.requestMatchers(HttpMethod.PUT, "api/Hospedaje/edit/**").hasRole("ANFITRION");
+        //Borrar Hospedaje
+        authReqConfig.requestMatchers(HttpMethod.DELETE, "api/Hospedaje/Delete/**").hasRole("ANFITRION");
+        //Hacer reserva
+        authReqConfig.requestMatchers(HttpMethod.POST, "api/Reserva/Crear").hasRole("INQUILINO");
+        //Editar reserva
+        authReqConfig.requestMatchers(HttpMethod.PUT, "api/Reserva/edit/**").hasRole("INQUILINO");
+        //Eliminar reserva
+        authReqConfig.requestMatchers(HttpMethod.DELETE, "api/Reserva/Delete/**").hasRole("INQUILINO");
 
     }
 

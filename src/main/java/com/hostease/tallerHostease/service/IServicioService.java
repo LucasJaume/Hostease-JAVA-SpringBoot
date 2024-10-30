@@ -1,5 +1,6 @@
 package com.hostease.tallerHostease.service;
 
+import com.hostease.tallerHostease.dto.EditServicioDTO;
 import com.hostease.tallerHostease.model.Servicio;
 
 import java.util.List;
@@ -14,5 +15,5 @@ public interface IServicioService {
 
     public Servicio createServicio(Servicio servicio);
 
-    public Servicio editServicio(Servicio servicio, Long id);
+    public Servicio editServicio(EditServicioDTO editServicioDTO, Long id);
 }

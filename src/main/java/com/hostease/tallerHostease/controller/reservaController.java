@@ -1,8 +1,11 @@
 package com.hostease.tallerHostease.controller;
 
+import com.hostease.tallerHostease.dto.CrearReservaDTO;
+import com.hostease.tallerHostease.dto.EditReservaDTO;
 import com.hostease.tallerHostease.model.PKReserva;
 import com.hostease.tallerHostease.model.Reserva;
 import com.hostease.tallerHostease.service.IReservaService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,22 +35,35 @@ public class reservaController {
     }
 
     @PostMapping("/Crear")
-    public ResponseEntity<Reserva> crearReserva(@RequestBody Reserva reserva) {
-        return ResponseEntity.ok(reservaService.crearReserva(reserva));
+    public ResponseEntity<?> crearReserva(@RequestBody CrearReservaDTO crearReservaDTO) {
+        try {
+            Reserva nuevaReserva = reservaService.crearReserva(crearReservaDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevaReserva);
+        } catch (IllegalArgumentException e) {
+            // Manejo de errores
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear la reserva");
+        }
     }
 
     @DeleteMapping("/Delete/{id_hospedaje}-{id_usuario}")
-    public void eliminarReserva(@PathVariable Long id_hospedaje, @PathVariable Long id_usuario) {
+    public ResponseEntity<String> eliminarReserva(@PathVariable Long id_hospedaje, @PathVariable Long id_usuario) {
         PKReserva id = new PKReserva(id_hospedaje, id_usuario);
-        reservaService.deleteByid(id);
+        try {
+            reservaService.deleteByid(id);
+            return ResponseEntity.ok("Reserva cancelada exitosamente.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("edit/{id_hospedaje}-{id_usuario}")
-    public ResponseEntity<Reserva> editReserva(@PathVariable Long id_hospedaje, @PathVariable Long id_usuario, @RequestBody Reserva reserva) {
+    public ResponseEntity<Reserva> editReserva(@PathVariable Long id_hospedaje, @PathVariable Long id_usuario, @RequestBody EditReservaDTO editReservaDTO) {
         PKReserva id = new PKReserva(id_hospedaje, id_usuario);
-        Reserva updatedReserva = reservaService.editReserva(reserva, id);
-        if (updatedReserva != null) {
-            return ResponseEntity.ok(updatedReserva);
+        Reserva reservaEditada = reservaService.editReserva(editReservaDTO,id);
+        if (reservaEditada != null) {
+            return ResponseEntity.ok(reservaEditada);
         }else{
             return ResponseEntity.notFound().build();
         }
