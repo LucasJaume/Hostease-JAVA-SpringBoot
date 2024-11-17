@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,14 +19,39 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
+
 
 @Configuration
-public class SecurityBeansInjector {
+public class SecurityBeansInjector implements WebMvcConfigurer {
     @Autowired
     private AuthenticationConfiguration authenticationConfiguration;
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:4200")); // Origen permitido
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+
 
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
@@ -55,6 +81,7 @@ public class SecurityBeansInjector {
         };
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationProvider daoAuthProvider) throws Exception {
         SecurityFilterChain filterChain = http
@@ -75,26 +102,25 @@ public class SecurityBeansInjector {
         authReqConfig.requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll();
         authReqConfig.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll();
         //Modificacion de usuario
-        authReqConfig.requestMatchers(HttpMethod.PUT, "api/Usuario/edit/**").authenticated();
+        authReqConfig.requestMatchers(HttpMethod.PUT, "/api/Usuario/edit/**").authenticated();
         //Crear Servicio
-        authReqConfig.requestMatchers(HttpMethod.POST, "api/Servicio/crear").hasRole("ADMINISTRADOR");
+        authReqConfig.requestMatchers(HttpMethod.POST, "/api/Servicio/crear").hasRole("ADMINISTRADOR");
         //editar Servicio
-        authReqConfig.requestMatchers(HttpMethod.PUT, "api/Servicio/editar/**").hasRole("ADMINISTRADOR");
+        authReqConfig.requestMatchers(HttpMethod.PUT, "/api/Servicio/editar/**").hasRole("ADMINISTRADOR");
         //Eliminar Servicio
-        authReqConfig.requestMatchers(HttpMethod.DELETE, "api/Servicio/delete/**").hasRole("ADMINISTRADOR");
+        authReqConfig.requestMatchers(HttpMethod.DELETE, "/api/Servicio/delete/**").hasRole("ADMINISTRADOR");
         //Crear Hospedaje
-        authReqConfig.requestMatchers(HttpMethod.POST, "api/Hospedaje/Crear").hasRole("ANFITRION");
+        authReqConfig.requestMatchers(HttpMethod.POST, "/api/Hospedaje/Crear").hasRole("ANFITRION");
         //Editar Hospedaje
-        authReqConfig.requestMatchers(HttpMethod.PUT, "api/Hospedaje/edit/**").hasRole("ANFITRION");
+        authReqConfig.requestMatchers(HttpMethod.PUT, "/api/Hospedaje/edit/**").hasRole("ANFITRION");
         //Borrar Hospedaje
-        authReqConfig.requestMatchers(HttpMethod.DELETE, "api/Hospedaje/Delete/**").hasRole("ANFITRION");
+        authReqConfig.requestMatchers(HttpMethod.DELETE, "/api/Hospedaje/Delete/**").hasRole("ANFITRION");
         //Hacer reserva
-        authReqConfig.requestMatchers(HttpMethod.POST, "api/Reserva/Crear").hasRole("INQUILINO");
+        authReqConfig.requestMatchers(HttpMethod.POST, "/api/Reserva/Crear").hasRole("INQUILINO");
         //Editar reserva
-        authReqConfig.requestMatchers(HttpMethod.PUT, "api/Reserva/edit/**").hasRole("INQUILINO");
+        authReqConfig.requestMatchers(HttpMethod.PUT, "/api/Reserva/edit/**").hasRole("INQUILINO");
         //Eliminar reserva
-        authReqConfig.requestMatchers(HttpMethod.DELETE, "api/Reserva/Delete/**").hasRole("INQUILINO");
-
+        authReqConfig.requestMatchers(HttpMethod.DELETE, "/api/Reserva/Delete/**").hasRole("INQUILINO");
     }
 
 }

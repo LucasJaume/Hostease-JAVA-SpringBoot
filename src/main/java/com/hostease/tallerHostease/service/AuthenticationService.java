@@ -42,12 +42,17 @@ public class AuthenticationService {
         // 5. Crear y devolver la respuesta
         AuthenticationResponseDTO authResponse = new AuthenticationResponseDTO();
         authResponse.setToken(jwt);
+        authResponse.setUsername(usuario.getUsername());
+        authResponse.setRole(usuario.getTipoUsuarios().get(0).getNombre()); // Asumiendo que el usuario tiene un solo rol
         return authResponse;
     }
-
 
     //para generar reclamos adicionales
     private Map<String, Object> generateExtraClaims(Usuario user) {
         return new HashMap<>();
     }
 }
+
+
+
+
