@@ -103,6 +103,12 @@ public class SecurityBeansInjector implements WebMvcConfigurer {
         authReqConfig.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll();
         //Modificacion de usuario
         authReqConfig.requestMatchers(HttpMethod.PUT, "/api/Usuario/edit/**").authenticated();
+        //cualquier autenticado accede a los datos
+        authReqConfig.requestMatchers(HttpMethod.GET, "/api/Ciudad/All").authenticated();
+        authReqConfig.requestMatchers(HttpMethod.GET, "/api/TipoHospedaje/All").authenticated();
+        authReqConfig.requestMatchers(HttpMethod.GET, "/api/Hospedaje/All").authenticated();
+        authReqConfig.requestMatchers(HttpMethod.GET, "/api/Servicio/All").authenticated();
+        authReqConfig.requestMatchers(HttpMethod.GET, "/api/Reserva/All").authenticated();
         //Crear Servicio
         authReqConfig.requestMatchers(HttpMethod.POST, "/api/Servicio/crear").hasRole("ADMINISTRADOR");
         //editar Servicio
@@ -122,5 +128,4 @@ public class SecurityBeansInjector implements WebMvcConfigurer {
         //Eliminar reserva
         authReqConfig.requestMatchers(HttpMethod.DELETE, "/api/Reserva/Delete/**").hasRole("INQUILINO");
     }
-
 }

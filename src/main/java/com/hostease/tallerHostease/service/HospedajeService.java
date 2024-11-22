@@ -1,6 +1,5 @@
 package com.hostease.tallerHostease.service;
 
-
 import com.hostease.tallerHostease.dto.CrearHospedajeDTO;
 import com.hostease.tallerHostease.dto.EditHospedajeDTO;
 import com.hostease.tallerHostease.model.Hospedaje;
@@ -91,6 +90,4 @@ public class HospedajeService implements IHospedajeService{
         hospedaje.setFecha_modificacion(java.time.Instant.now());
         return hospedajeRepository.save(hospedaje);
     }
-
-
 }

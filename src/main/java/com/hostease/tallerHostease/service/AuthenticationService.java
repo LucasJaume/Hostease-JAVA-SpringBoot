@@ -44,6 +44,7 @@ public class AuthenticationService {
         authResponse.setToken(jwt);
         authResponse.setUsername(usuario.getUsername());
         authResponse.setRole(usuario.getTipoUsuarios().get(0).getNombre()); // Asumiendo que el usuario tiene un solo rol
+        authResponse.setId(usuario.getId());
         return authResponse;
     }
 

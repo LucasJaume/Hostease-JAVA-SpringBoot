@@ -39,7 +39,7 @@ public class AuthController {
         // Registrar nuevo usuario
         userDetailsService.registerOneCustomer(newUser);
         // respuesta de éxito
-        return ResponseEntity.ok("Usuario registrado exitosamente");
+        return ResponseEntity.ok().build();
     }
 
 

@@ -39,7 +39,8 @@ public class hospedajeController {
     @DeleteMapping("/Delete/{id}")
     public ResponseEntity<String> eliminarHospedaje(@PathVariable Long id){
         hospedajeService.deleteById(id);
-        return ResponseEntity.ok("Hospedaje eliminado exitosamente.");
+        return ResponseEntity.noContent().build();
+        //return ResponseEntity.ok("Hospedaje eliminado exitosamente.");
     }
 
     @PutMapping("/edit/{id}")

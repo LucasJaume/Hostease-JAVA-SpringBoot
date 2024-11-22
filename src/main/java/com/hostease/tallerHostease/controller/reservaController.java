@@ -52,9 +52,9 @@ public class reservaController {
         PKReserva id = new PKReserva(id_hospedaje, id_usuario);
         try {
             reservaService.deleteByid(id);
-            return ResponseEntity.ok("Reserva cancelada exitosamente.");
+            return ResponseEntity.noContent().build();
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.noContent().build();
         }
     }
 

@@ -39,7 +39,8 @@ public class servicioController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> eliminarServicio(@PathVariable Long id) {
         servicioService.deleteById(id);
-        return ResponseEntity.ok("Servicio eliminado con éxito");
+        return ResponseEntity.noContent().build();
+        //return ResponseEntity.ok("Servicio eliminado con éxito");
     }
 
 
@@ -47,7 +48,7 @@ public class servicioController {
     public ResponseEntity<?> editServicio(@RequestBody EditServicioDTO editServicioDTO, @PathVariable Long id) {
         try {
             Servicio updatedServicio = servicioService.editServicio(editServicioDTO, id);
-            return ResponseEntity.ok("Servicio actualizado con éxito: " + updatedServicio);
+            return ResponseEntity.ok(updatedServicio);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("El servicio con ID " + id + " no fue encontrado.");
         } catch (Exception e) {
